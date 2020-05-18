@@ -16,10 +16,7 @@ function getFilenames() {
 }
 
 function pasteLibrary(activeEditor: vscode.TextEditor, fileName: string) {
-	if (!activeEditor) { return; }
-
 	const insertPosition = activeEditor.selection.active;
-
 	const filePath = path.join(folderPath, fileName);
 	
 	var text = "";

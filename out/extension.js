@@ -15,9 +15,6 @@ function getFilenames() {
     return fileNames;
 }
 function pasteLibrary(activeEditor, fileName) {
-    if (!activeEditor) {
-        return;
-    }
     const insertPosition = activeEditor.selection.active;
     const filePath = path.join(folderPath, fileName);
     var text = "";
