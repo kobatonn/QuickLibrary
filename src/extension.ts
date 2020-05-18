@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
 
-		vscode.window.showInputBox({prompt: 'UserName', placeHolder: 'UserName'}).then(value => {
+		vscode.window.showInputBox({prompt: 'Enter the filename to paste.', placeHolder: 'Filename'}).then(value => {
 			if (value === undefined) {  throw new Error('cancelled');	}
 
 			// handle valid values

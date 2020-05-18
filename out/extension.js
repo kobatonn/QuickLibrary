@@ -11,7 +11,6 @@ function pasteLibrary(activeEditor, fileName) {
     const folderPath = conf['libraryFolder'];
     const path = require('path');
     const filePath = path.join(folderPath, fileName);
-    vscode.window.showInformationMessage(filePath);
     var text = "";
     try {
         text = fs.readFileSync(filePath, "utf-8");
@@ -38,7 +37,7 @@ function activate(context) {
         return;
     }
     let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
-        vscode.window.showInputBox({ prompt: 'UserName', placeHolder: 'UserName' }).then(value => {
+        vscode.window.showInputBox({ prompt: 'Enter the filename to paste.', placeHolder: 'Filename' }).then(value => {
             if (value === undefined) {
                 throw new Error('cancelled');
             }
