@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
+function getFilenames() {
+}
 function pasteLibrary(activeEditor, fileName) {
     if (!activeEditor) {
         return;
@@ -36,8 +38,9 @@ function activate(context) {
     if (!activeEditor) {
         return;
     }
+    var Files = ['a', 'bl', 'c'];
     let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
-        vscode.window.showInputBox({ prompt: 'Enter the filename to paste.', placeHolder: 'Filename' }).then(value => {
+        vscode.window.showQuickPick(Files, { placeHolder: 'Filename' }).then(value => {
             if (value === undefined) {
                 throw new Error('cancelled');
             }

@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
 import * as fs from "fs"
 
+function getFilenames() {
+
+}
+
 function pasteLibrary(activeEditor: vscode.TextEditor, fileName: string) {
 	if (!activeEditor) { return; }
 
@@ -38,10 +42,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const activeEditor = vscode.window.activeTextEditor;
 	if (!activeEditor) { return; }
-
+	var Files = ['a', 'bl', 'c'];
 	let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
-
-		vscode.window.showInputBox({prompt: 'Enter the filename to paste.', placeHolder: 'Filename'}).then(value => {
+	
+		vscode.window.showQuickPick(Files, {placeHolder: 'Filename'}).then(value => {
 			if (value === undefined) {  throw new Error('cancelled');	}
 
 			// handle valid values
