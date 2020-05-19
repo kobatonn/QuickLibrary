@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
-const conf = vscode.workspace.getConfiguration('quicklib');
-const folderPath = conf['libraryFolder'];
-function getFilenames() {
+function getFilenames(conf, folderPath) {
     const isFile = (file) => {
         const stat = fs.statSync(file);
         return stat.isFile();
@@ -17,9 +15,9 @@ function getFilenames() {
         fileNames = fileNames.filter(name => name.match(/^(?!\.).*$/));
     return fileNames;
 }
-function pasteLibrary(activeEditor, fileName) {
+function pasteLibrary(activeEditor, folderPath, filename) {
     const insertPosition = activeEditor.selection.active;
-    const filePath = path.join(folderPath, fileName);
+    const filePath = path.join(folderPath, filename);
     var text = "";
     try {
         text = fs.readFileSync(filePath, "utf-8");
@@ -41,22 +39,24 @@ function pasteLibrary(activeEditor, fileName) {
     });
 }
 function activate(context) {
-    const activeEditor = vscode.window.activeTextEditor;
-    if (!activeEditor) {
-        return;
-    }
-    const fileNames = getFilenames();
-    if (!fileNames) {
-        return;
-    }
-    ;
     let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
-        vscode.window.showQuickPick(fileNames, { placeHolder: 'Filename' }).then(value => {
-            if (value === undefined) {
+        const activeEditor = vscode.window.activeTextEditor;
+        if (!activeEditor) {
+            return;
+        }
+        const conf = vscode.workspace.getConfiguration('quicklib');
+        const folderPath = conf['libraryFolder'];
+        let fileNames = getFilenames(conf, folderPath);
+        if (!fileNames) {
+            return;
+        }
+        ;
+        vscode.window.showQuickPick(fileNames, { placeHolder: 'Filename' }).then(filename => {
+            if (filename === undefined) {
                 throw new Error('cancelled');
             }
-            // handle valid values
-            pasteLibrary(activeEditor, value);
+            // handle valid filename
+            pasteLibrary(activeEditor, folderPath, filename);
         });
     });
     context.subscriptions.push(disposable);

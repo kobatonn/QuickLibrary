@@ -1,10 +1,8 @@
 import * as vscode from 'vscode';
 import * as fs from "fs"
 import * as path from 'path';
-const conf = vscode.workspace.getConfiguration('quicklib');
-const folderPath = conf['libraryFolder'];
 
-function getFilenames() {
+function getFilenames(conf : vscode.WorkspaceConfiguration, folderPath : string) {
 	const isFile = (file : string) => {
 		const stat = fs.statSync(file);
 		return stat.isFile();
@@ -18,9 +16,9 @@ function getFilenames() {
 	return fileNames;
 }
 
-function pasteLibrary(activeEditor: vscode.TextEditor, fileName: string) {
+function pasteLibrary(activeEditor: vscode.TextEditor, folderPath : string, filename: string) {
 	const insertPosition = activeEditor.selection.active;
-	const filePath = path.join(folderPath, fileName);
+	const filePath = path.join(folderPath, filename);
 	
 	var text = "";
 	try {
@@ -48,17 +46,20 @@ function pasteLibrary(activeEditor: vscode.TextEditor, fileName: string) {
 
 export function activate(context: vscode.ExtensionContext) {
 
-	const activeEditor = vscode.window.activeTextEditor;
-	if (!activeEditor) { return; }
-	const fileNames = getFilenames();
-	if (!fileNames) { return; };
 	let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
+		const activeEditor = vscode.window.activeTextEditor;
+		if (!activeEditor) { return; }
 	
-		vscode.window.showQuickPick(fileNames, {placeHolder: 'Filename'}).then(value => {
-			if (value === undefined) {  throw new Error('cancelled');	}
+		const conf = vscode.workspace.getConfiguration('quicklib');
+		const folderPath = conf['libraryFolder'];
+		let fileNames = getFilenames(conf, folderPath);
+		if (!fileNames) { return; };
+	
+		vscode.window.showQuickPick(fileNames, {placeHolder: 'Filename'}).then(filename => {
+			if (filename === undefined) {  throw new Error('cancelled');	}
 
-			// handle valid values
-			pasteLibrary(activeEditor, value);
+			// handle valid filename
+			pasteLibrary(activeEditor, folderPath, filename);
 		});
 
 	});
