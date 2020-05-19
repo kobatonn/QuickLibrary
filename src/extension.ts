@@ -10,8 +10,11 @@ function getFilenames() {
 		return stat.isFile();
 	}
 	
-	const allNames = fs.readdirSync(folderPath);
-	const fileNames = allNames.filter(name => isFile(`${folderPath}/${name}`))  
+	const allFilePath = fs.readdirSync(folderPath);
+	let fileNames = allFilePath.filter(name => isFile(`${folderPath}/${name}`));
+
+
+	if (true) fileNames = fileNames.filter(name => name.match(/^(?!\.).*$/));	
 	return fileNames;
 }
 
