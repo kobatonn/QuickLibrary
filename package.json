@@ -22,6 +22,11 @@
           "type": "string",
           "default": "$HOME/.vscode/extensions/QuickLibrary/LibraryFiles",
           "description": "Set the path to a Library folder to managing the library."
+				},
+				"quicklib.showHiddenFiles": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to include hidden files in the list of library files displayed."
         }
 			}
     },

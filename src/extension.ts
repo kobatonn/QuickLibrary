@@ -12,9 +12,9 @@ function getFilenames() {
 	
 	const allFilePath = fs.readdirSync(folderPath);
 	let fileNames = allFilePath.filter(name => isFile(`${folderPath}/${name}`));
-
-
-	if (true) fileNames = fileNames.filter(name => name.match(/^(?!\.).*$/));	
+	
+	const showsHiddenFiles = conf['showHiddenFiles'];
+	if (!showsHiddenFiles) fileNames = fileNames.filter(name => name.match(/^(?!\.).*$/));
 	return fileNames;
 }
 
