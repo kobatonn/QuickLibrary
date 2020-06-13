@@ -1,6 +1,6 @@
 # Quick Library README
 
-VSCode extension for quick library handling.
+VSCode extension for pasting library code inline.
 
 ## Features
 
