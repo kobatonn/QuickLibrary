@@ -10,17 +10,18 @@ VSCode extension for pasting library code inline.
 
 ## Installation
 
-1. Download "quicklib-1.0.0.vsix" in the latest release.
+1. Download a **.vsix** file in the latest release.
 
 2. In VSCode, press "Command + Shift + P" and run "Extensions: Install from VSIX...".
 
-3. Select "quicklib-1.0.0.vsix" and install the extension.
+3. Select the **.vsix** file you downloaded.
 
 
 ## Usage
 
 1. Open a setting file for VSCode (Press "Command + ," in VSCode).
-2. Set a library folder to "Library Folder" in Quick Library settings.
+
+2. Set a library folder to "Library Folder" in QuickLibrary settings.
 
 3. Press "Command + i" where to paste a library file and select a file name.
 
