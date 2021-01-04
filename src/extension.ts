@@ -26,7 +26,7 @@ function pasteCode(folderPath : string, filename: string) {
 	try {
 		text = fs.readFileSync(filePath, "utf-8");
 	} catch(err) {
-		vscode.window.showInformationMessage("File not found.");
+		vscode.window.showErrorMessage("File not found.");
 		return;
 	}
 	
@@ -46,6 +46,22 @@ function pasteCode(folderPath : string, filename: string) {
 	)
 }
 
+function saveCode(filePath: string, text: string) {
+	if (fs.existsSync(filePath)) {
+		vscode.window.showErrorMessage('Failed: same filename already exists.');
+		return;
+	}
+
+	try {
+		fs.writeFileSync(filePath, text);
+	} catch(err) {
+		vscode.window.showErrorMessage("Failed: file saving error.");
+		return;
+	}
+
+	vscode.window.showInformationMessage('Completed saving the code.');
+}
+
 export function activate(context: vscode.ExtensionContext) {
 
 	let pasteCommand = vscode.commands.registerCommand('quicklib.paste', () => {
@@ -62,10 +78,28 @@ export function activate(context: vscode.ExtensionContext) {
 
 			pasteCode(folderPath, filename);
 		});
-
+		
 	});
 
+	let saveCommand = vscode.commands.registerCommand('quicklib.save', () => {
+		const activeEditor = vscode.window.activeTextEditor;
+		if (!activeEditor) { return; }
+		const selection = activeEditor.selection;
+		if (activeEditor.selection.isEmpty) { return; }
+		const text = activeEditor.document.getText(selection);
+		const conf = vscode.workspace.getConfiguration('quicklib');
+		const folderPath = conf['libraryFolder'];
+
+    vscode.window.showInputBox({placeHolder: 'Filename'}).then(filename => {
+			if (filename == undefined) return;
+			const filePath = path.join(folderPath, filename);
+			saveCode(filePath, text);
+    });
+		
+	});
+	
 	context.subscriptions.push(pasteCommand);
+	context.subscriptions.push(saveCommand);
 }
 
 export function deactivate() {}

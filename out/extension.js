@@ -15,7 +15,11 @@ function getFilenames(conf, folderPath) {
         fileNames = fileNames.filter(name => name.match(/^(?!\.).*$/));
     return fileNames;
 }
-function pasteLibrary(activeEditor, folderPath, filename) {
+function pasteCode(folderPath, filename) {
+    const activeEditor = vscode.window.activeTextEditor;
+    if (!activeEditor) {
+        return;
+    }
     const insertPosition = activeEditor.selection.active;
     const filePath = path.join(folderPath, filename);
     var text = "";
@@ -23,7 +27,7 @@ function pasteLibrary(activeEditor, folderPath, filename) {
         text = fs.readFileSync(filePath, "utf-8");
     }
     catch (err) {
-        vscode.window.showInformationMessage("File not found.");
+        vscode.window.showErrorMessage("File not found.");
         return;
     }
     let insertText = function (editBuilder) {
@@ -38,8 +42,22 @@ function pasteLibrary(activeEditor, folderPath, filename) {
         // after insertion is complete
     });
 }
+function saveCode(filePath, text) {
+    if (fs.existsSync(filePath)) {
+        vscode.window.showErrorMessage('Failed: same filename already exists.');
+        return;
+    }
+    try {
+        fs.writeFileSync(filePath, text);
+    }
+    catch (err) {
+        vscode.window.showErrorMessage("Failed: file saving error.");
+        return;
+    }
+    vscode.window.showInformationMessage('Completed saving the code.');
+}
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('quicklib.paste', () => {
+    let pasteCommand = vscode.commands.registerCommand('quicklib.paste', () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
             return;
@@ -55,11 +73,30 @@ function activate(context) {
             if (filename === undefined) {
                 throw new Error('cancelled');
             }
-            // handle valid filename
-            pasteLibrary(activeEditor, folderPath, filename);
+            pasteCode(folderPath, filename);
         });
     });
-    context.subscriptions.push(disposable);
+    let saveCommand = vscode.commands.registerCommand('quicklib.save', () => {
+        const activeEditor = vscode.window.activeTextEditor;
+        if (!activeEditor) {
+            return;
+        }
+        const selection = activeEditor.selection;
+        if (activeEditor.selection.isEmpty) {
+            return;
+        }
+        const text = activeEditor.document.getText(selection);
+        const conf = vscode.workspace.getConfiguration('quicklib');
+        const folderPath = conf['libraryFolder'];
+        vscode.window.showInputBox({ placeHolder: 'Filename' }).then(filename => {
+            if (filename == undefined)
+                return;
+            const filePath = path.join(folderPath, filename);
+            saveCode(filePath, text);
+        });
+    });
+    context.subscriptions.push(pasteCommand);
+    context.subscriptions.push(saveCommand);
 }
 exports.activate = activate;
 function deactivate() { }
