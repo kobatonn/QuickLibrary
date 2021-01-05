@@ -38,7 +38,7 @@
 			},
 			{
 				"command": "quicklib.save",
-				"title": "QuickLibrary: Save Selected Text to Library Folder"
+				"title": "QuickLibrary: Save Selected Text on Library Folder"
 			}
 		],
 		"keybindings": [
