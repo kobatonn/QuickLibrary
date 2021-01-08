@@ -47,6 +47,12 @@
 				"key": "ctrl+i",
 				"mac": "cmd+i",
 				"when": "editorTextFocus"
+			},
+			{
+				"command": "quicklib.save",
+				"key": "ctrl+shift+i",
+				"mac": "cmd+shift+i",
+				"when": "editorTextFocus"
 			}
 		]
 	},
