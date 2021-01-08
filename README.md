@@ -1,31 +1,24 @@
-# Quick Library README
+QuickLibrary
+====
+VS Code extension to manage your own library.
+This includes:
+- Save a selection of text to library folder.
+- Paste library code inline.
 
-VSCode extension for pasting library code inline.
 
-
-## Features
-
-![Usage](https://user-images.githubusercontent.com/18528907/85522640-e424ca80-b640-11ea-86f0-3e397f2ef0c4.gif)
+## Demo
+![Demo](https://user-images.githubusercontent.com/18528907/104050985-c577d100-522a-11eb-81b9-40c0f4e18282.gif)
 
 
 ## Installation
+1. Download a QuickLibrary package (`.vsix` file) in the latest release.
+2. On VS Code, press `Command + Shift + P` and run `Extensions: Install from VSIX...`.
+3. Select the QuickLibrary package you downloaded.
 
-1. Download a **.vsix** file in the latest release.
+## Setting a library path
+1. Open settings on VSCode. (Press `Command + ,`)
+2. In QuickLibrary settings, set a path of library folder to "Library Folder".
 
-2. In VSCode, press "Command + Shift + P" and run "Extensions: Install from VSIX...".
-
-3. Select the **.vsix** file you downloaded.
-
-
-## Usage
-
-1. Open a setting file for VSCode (Press "Command + ," in VSCode).
-
-2. Set a library folder to "Library Folder" in QuickLibrary settings.
-
-3. Press "Command + i" where to paste a library file and select a file name.
-
-
-## Requirements
-
-VSCode
+## Commands
+- `Command+Shift+i` - Save code (quicklib.save)
+- `Command+i` - Paste code (quicklib.paste)
