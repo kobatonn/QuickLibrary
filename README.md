@@ -17,7 +17,7 @@ This includes:
 
 ## Setting a library path
 1. Open settings on VSCode. (Press `Command + ,`)
-2. In QuickLibrary settings, set a path of library folder to "Library Folder".
+2. In QuickLibrary settings, set the path of a library folder to "Library Folder".
 
 ## Commands
 - `Command+Shift+i` - Save code (quicklib.save)
