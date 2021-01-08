@@ -55,11 +55,11 @@ function saveCode(filePath: string, text: string) {
 	try {
 		fs.writeFileSync(filePath, text);
 	} catch(err) {
-		vscode.window.showErrorMessage("Failed: file saving error.");
+		vscode.window.showErrorMessage("Failed: saving error.");
 		return;
 	}
 
-	vscode.window.showInformationMessage('Completed saving the code.');
+	vscode.window.showInformationMessage('Completed saving code.');
 }
 
 export function activate(context: vscode.ExtensionContext) {
