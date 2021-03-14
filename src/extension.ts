@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as path from 'path';
 import { privateEncrypt } from 'crypto';
 
-function getFilenames(conf : vscode.WorkspaceConfiguration, folderPath : string) {
+function getFilenames(conf : vscode.WorkspaceConfiguration, folderPath : string): string[] {
 	const isFile = (file : string) => {
 		const stat = fs.statSync(file);
 		return stat.isFile();
@@ -17,7 +17,7 @@ function getFilenames(conf : vscode.WorkspaceConfiguration, folderPath : string)
 	return fileNames;
 }
 
-function pasteCode(folderPath : string, filename: string) {
+function pasteCode(folderPath : string, filename: string): void{
 	const activeEditor = vscode.window.activeTextEditor;
 	if (!activeEditor) { return; }
 	const insertPosition = activeEditor.selection.active;
@@ -47,7 +47,7 @@ function pasteCode(folderPath : string, filename: string) {
 	)
 }
 
-function saveCode(filePath: string, text: string) {
+function saveCode(filePath: string, text: string): void {
 	if (fs.existsSync(filePath)) {
 		vscode.window.showErrorMessage('Failed: same filename already exists.');
 		return;
@@ -63,7 +63,7 @@ function saveCode(filePath: string, text: string) {
 	vscode.window.showInformationMessage('Completed saving code.');
 }
 
-function openLibraryFolder(folderPath: string) {
+function openLibraryFolder(folderPath: string): void {
 	const uri = vscode.Uri.file(folderPath);  // convert string to Uri
 	const options = { forceNewWindow: true }; // openFolder options
 	vscode.commands.executeCommand('vscode.openFolder', uri, options).then(edit => {})
