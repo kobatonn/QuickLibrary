@@ -64,8 +64,8 @@ function saveCode(filePath: string, text: string) {
 }
 
 function openLibraryFolder(folderPath: string) {
-	const uri = vscode.Uri.file(folderPath);
-	const options = { forceNewWindow: true };
+	const uri = vscode.Uri.file(folderPath);  // convert string to Uri
+	const options = { forceNewWindow: true }; // openFolder options
 	vscode.commands.executeCommand('vscode.openFolder', uri, options).then(edit => {})
 	.then(undefined, err => {
 		console.error(err);
@@ -74,6 +74,7 @@ function openLibraryFolder(folderPath: string) {
 
 export function activate(context: vscode.ExtensionContext) {
 
+	// Paste a library file to cursor position.
 	let pasteCommand = vscode.commands.registerCommand('quicklib.paste', () => {
 		const activeEditor = vscode.window.activeTextEditor;
 		if (!activeEditor) { return; }
@@ -91,6 +92,7 @@ export function activate(context: vscode.ExtensionContext) {
 		
 	});
 
+	// Save the selection to the Library folder.
 	let saveCommand = vscode.commands.registerCommand('quicklib.save', () => {
 		const activeEditor = vscode.window.activeTextEditor;
 		if (!activeEditor) { return; }
@@ -100,6 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const conf = vscode.workspace.getConfiguration('quicklib');
 		const folderPath = conf['libraryFolder'];
 
+		// InputBox for　entering a file name.
     vscode.window.showInputBox({placeHolder: 'Filename'}).then(filename => {
 			if (filename == undefined) return;
 			const filePath = path.join(folderPath, filename);
@@ -108,6 +111,7 @@ export function activate(context: vscode.ExtensionContext) {
 		
 	});
 
+	// Open library folder.
 	let openCommand = vscode.commands.registerCommand('quicklib.open', () => {
 		const conf = vscode.workspace.getConfiguration('quicklib');
 		const folderPath = conf['libraryFolder'];
@@ -115,7 +119,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	});
 
-	
+	// register commands
 	context.subscriptions.push(pasteCommand);
 	context.subscriptions.push(saveCommand);
 	context.subscriptions.push(openCommand)

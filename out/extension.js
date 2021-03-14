@@ -57,14 +57,15 @@ function saveCode(filePath, text) {
     vscode.window.showInformationMessage('Completed saving code.');
 }
 function openLibraryFolder(folderPath) {
-    const uri = vscode.Uri.file(folderPath);
-    const options = { forceNewWindow: true };
+    const uri = vscode.Uri.file(folderPath); // convert string to Uri
+    const options = { forceNewWindow: true }; // openFolder options
     vscode.commands.executeCommand('vscode.openFolder', uri, options).then(edit => { })
         .then(undefined, err => {
         console.error(err);
     });
 }
 function activate(context) {
+    // Paste a library file to cursor position.
     let pasteCommand = vscode.commands.registerCommand('quicklib.paste', () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
@@ -84,6 +85,7 @@ function activate(context) {
             pasteCode(folderPath, filename);
         });
     });
+    // Save the selection to the Library folder.
     let saveCommand = vscode.commands.registerCommand('quicklib.save', () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
@@ -96,6 +98,7 @@ function activate(context) {
         const text = activeEditor.document.getText(selection);
         const conf = vscode.workspace.getConfiguration('quicklib');
         const folderPath = conf['libraryFolder'];
+        // InputBox for　entering a file name.
         vscode.window.showInputBox({ placeHolder: 'Filename' }).then(filename => {
             if (filename == undefined)
                 return;
@@ -103,11 +106,13 @@ function activate(context) {
             saveCode(filePath, text);
         });
     });
+    // Open library folder.
     let openCommand = vscode.commands.registerCommand('quicklib.open', () => {
         const conf = vscode.workspace.getConfiguration('quicklib');
         const folderPath = conf['libraryFolder'];
         openLibraryFolder(folderPath);
     });
+    // register commands
     context.subscriptions.push(pasteCommand);
     context.subscriptions.push(saveCommand);
     context.subscriptions.push(openCommand);
