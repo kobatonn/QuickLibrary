@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from "fs"
 import * as path from 'path';
+import { privateEncrypt } from 'crypto';
 
 function getFilenames(conf : vscode.WorkspaceConfiguration, folderPath : string) {
 	const isFile = (file : string) => {
@@ -62,6 +63,15 @@ function saveCode(filePath: string, text: string) {
 	vscode.window.showInformationMessage('Completed saving code.');
 }
 
+function openLibraryFolder(folderPath: string) {
+	const uri = vscode.Uri.file(folderPath);
+	const options = { forceNewWindow: true };
+	vscode.commands.executeCommand('vscode.openFolder', uri, options).then(edit => {})
+	.then(undefined, err => {
+		console.error(err);
+	})
+}
+
 export function activate(context: vscode.ExtensionContext) {
 
 	let pasteCommand = vscode.commands.registerCommand('quicklib.paste', () => {
@@ -97,9 +107,18 @@ export function activate(context: vscode.ExtensionContext) {
     });
 		
 	});
+
+	let openCommand = vscode.commands.registerCommand('quicklib.open', () => {
+		const conf = vscode.workspace.getConfiguration('quicklib');
+		const folderPath = conf['libraryFolder'];
+		openLibraryFolder(folderPath);
+
+	});
+
 	
 	context.subscriptions.push(pasteCommand);
 	context.subscriptions.push(saveCommand);
+	context.subscriptions.push(openCommand)
 }
 
 export function deactivate() {}

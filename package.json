@@ -12,7 +12,8 @@
 	],
 	"activationEvents": [
 		"onCommand:quicklib.paste",
-		"onCommand:quicklib.save"
+		"onCommand:quicklib.save",
+		"onCommand:quicklib.open"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -39,6 +40,10 @@
 			{
 				"command": "quicklib.save",
 				"title": "QuickLibrary: Save Selected Text on Library Folder"
+			},
+			{
+				"command": "quicklib.open",
+				"title": "QuickLibrary: Open Library Folder on New Window"
 			}
 		],
 		"keybindings": [
@@ -53,6 +58,11 @@
 				"key": "ctrl+shift+i",
 				"mac": "cmd+shift+i",
 				"when": "editorTextFocus"
+			},
+			{
+				"command": "quicklib.open",
+				"key": "ctrl+shift+0",
+				"mac": "cmd+shift+0"
 			}
 		]
 	},

@@ -56,6 +56,14 @@ function saveCode(filePath, text) {
     }
     vscode.window.showInformationMessage('Completed saving code.');
 }
+function openLibraryFolder(folderPath) {
+    const uri = vscode.Uri.file(folderPath);
+    const options = { forceNewWindow: true };
+    vscode.commands.executeCommand('vscode.openFolder', uri, options).then(edit => { })
+        .then(undefined, err => {
+        console.error(err);
+    });
+}
 function activate(context) {
     let pasteCommand = vscode.commands.registerCommand('quicklib.paste', () => {
         const activeEditor = vscode.window.activeTextEditor;
@@ -95,8 +103,14 @@ function activate(context) {
             saveCode(filePath, text);
         });
     });
+    let openCommand = vscode.commands.registerCommand('quicklib.open', () => {
+        const conf = vscode.workspace.getConfiguration('quicklib');
+        const folderPath = conf['libraryFolder'];
+        openLibraryFolder(folderPath);
+    });
     context.subscriptions.push(pasteCommand);
     context.subscriptions.push(saveCommand);
+    context.subscriptions.push(openCommand);
 }
 exports.activate = activate;
 function deactivate() { }
