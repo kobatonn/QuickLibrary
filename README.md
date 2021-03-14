@@ -22,3 +22,4 @@ This includes:
 ## Commands
 - `Command+Shift+i` - Save code (quicklib.save)
 - `Command+i` - Paste code (quicklib.paste)
+- `Command+Shift+0` - Open library folder in new window (quicklib.open)
